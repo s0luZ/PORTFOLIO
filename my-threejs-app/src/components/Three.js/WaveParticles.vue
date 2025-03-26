@@ -27,7 +27,10 @@ onBeforeUnmount(() => {
 function initThree() {
   // Scene, Camera, Renderer
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x1e2432);
+  scene.background = new THREE.Color(0x000000);
+  
+  
+
   
   // Set up camera for top-down view
   const aspectRatio = window.innerWidth / window.innerHeight;
