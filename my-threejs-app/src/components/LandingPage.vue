@@ -52,8 +52,9 @@ import WaveParticles from './Three.js/WaveParticles.vue';
   flex: 1;
   position: relative;
   background-color: #1e2432;
-  border-radius: 24px;
+  border-radius: 0px;
   overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
 .particles-wrapper {
