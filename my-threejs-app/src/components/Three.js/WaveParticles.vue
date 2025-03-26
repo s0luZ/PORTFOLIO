@@ -81,7 +81,12 @@ function initThree() {
     
     // Color gradient
     const shade = Math.random() * 0.15 + 0.05;
-    color.setRGB(shade, shade, shade * 1.2);
+    // Gold color components (r: 1, g: 0.84, b: 0)
+    color.setRGB(
+      1.0 * shade, // Red component
+      0.84 * shade, // Green component slightly lower
+      0.0 * shade  // Blue component very low for gold effect
+    );
     colors[i * 3] = color.r;
     colors[i * 3 + 1] = color.g;
     colors[i * 3 + 2] = color.b;
@@ -305,9 +310,10 @@ function animate() {
       if (maxParticleOpacity > 0) {
         const brightness = Math.random() * 0.2 + 0.8;
         positions[i + 1] = maxHeight;
-        colors[i] = brightness * maxParticleOpacity;
-        colors[i + 1] = brightness * maxParticleOpacity;
-        colors[i + 2] = brightness * maxParticleOpacity * 1.2;
+        // Gold color with brightness and opacity
+        colors[i] = brightness * maxParticleOpacity; // Red
+        colors[i + 1] = brightness * 0.84 * maxParticleOpacity; // Green at 84%
+        colors[i + 2] = 0; // Blue at 0 for gold effect
         sizes[i/3] = maxSize;
       } else {
         colors[i] = 0;
