@@ -137,11 +137,11 @@ function handleResize() {
 let time = 0;
 let lastWaveTime = 0;
 const WAVE_INTERVAL = 8000;
-const MOVEMENT_SPEED = 1;
+const MOVEMENT_SPEED = 0.8;
 const WAVE_RADIUS_MULTIPLIER = 35;
 const WAVE_INFLUENCE_DISTANCE = 25;
 const FADE_MULTIPLIER = 3;
-const WAVE_SPEED = 0.25;
+const WAVE_SPEED = 0.2;
 const MIN_WAVES = 1;
 const MAX_WAVES = 4;
 
@@ -153,22 +153,34 @@ const WAVE_PATTERNS = [
     moveX: (progress, width) => -progress * width * WAVE_SPEED,
     moveZ: () => 0
   },
+  { // Left to right
+    startX: (width) => -width/2 - WAVE_RADIUS_MULTIPLIER,
+    startZ: () => 0,
+    moveX: (progress, width) => progress * width * WAVE_SPEED,
+    moveZ: () => 0
+  },
   { // Top right to bottom left
     startX: (width) => width/2 + WAVE_RADIUS_MULTIPLIER,
     startZ: (height) => -height/2,
     moveX: (progress, width) => -progress * width * WAVE_SPEED,
     moveZ: (progress, height) => progress * height * WAVE_SPEED * 0.5
   },
-  { // Top right to left
-    startX: (width) => width/2 + WAVE_RADIUS_MULTIPLIER,
+  { // Top left to bottom right
+    startX: (width) => -width/2 - WAVE_RADIUS_MULTIPLIER,
     startZ: (height) => -height/2,
-    moveX: (progress, width) => -progress * width * WAVE_SPEED,
-    moveZ: (progress, height) => progress * height * WAVE_SPEED * 0.25
+    moveX: (progress, width) => progress * width * WAVE_SPEED,
+    moveZ: (progress, height) => progress * height * WAVE_SPEED * 0.5
   },
   { // Bottom right to top left
     startX: (width) => width/2 + WAVE_RADIUS_MULTIPLIER,
     startZ: (height) => height/2,
     moveX: (progress, width) => -progress * width * WAVE_SPEED,
+    moveZ: (progress, height) => -progress * height * WAVE_SPEED * 0.5
+  },
+  { // Bottom left to top right
+    startX: (width) => -width/2 - WAVE_RADIUS_MULTIPLIER,
+    startZ: (height) => height/2,
+    moveX: (progress, width) => progress * width * WAVE_SPEED,
     moveZ: (progress, height) => -progress * height * WAVE_SPEED * 0.5
   }
 ];
@@ -258,15 +270,17 @@ function animate() {
           Math.pow(z - waveCenterZ, 2)
         );
         
-        if (wave.progress > 0 && x <= width/2) {
+        if (wave.progress > 0) {
           const waveRadius = WAVE_RADIUS_MULTIPLIER;
           const distanceFromWave = Math.abs(distanceFromWaveCenter - waveRadius);
           
           const waveInfluence = Math.max(0, 1 - (distanceFromWave / WAVE_INFLUENCE_DISTANCE));
           const smoothInfluence = Math.pow(waveInfluence, 2) * (3 - 2 * waveInfluence);
           
-          if (x < waveCenterX && smoothInfluence > 0.05) {
-            const horizontalDistance = waveCenterX - x;
+          // Modify condition to check wave direction
+          const isMovingRight = wave.pattern.moveX(1, width) > 0;
+          if ((isMovingRight ? x > waveCenterX : x < waveCenterX) && smoothInfluence > 0.05) {
+            const horizontalDistance = Math.abs(waveCenterX - x);
             const fadeDistance = WAVE_INFLUENCE_DISTANCE * FADE_MULTIPLIER;
             const horizontalFade = Math.pow(Math.min(horizontalDistance / fadeDistance, 1), 1.5);
             

@@ -1,6 +1,7 @@
 <template>
   <div class="landing-container">
     <main class="main-content">
+        <p class="copyright">&#169; 2025 Isaiah Macaraeg</p>
       <div class="particles-wrapper">
         <WaveParticles />
         <nav class="side-nav">
@@ -11,7 +12,7 @@
           
           <ul class="nav-links">
             <li><a href="#" class="active">Home</a></li>
-            <li><a href="#">About me</a></li>
+            <li><a href="#">About me</a></li> 
             <li><a href="#">Projects</a></li>
             <li><a href="#">Skills & Tech Stack</a></li>
             <li><a href="#">Experience / Work</a></li>
@@ -26,7 +27,7 @@
                 in Manila, <br>
                 Philippines <br>
                 From fear to finesse— <br>
-                every frontend dev <br>
+                every developer <br>
                 starts somewhere.
             </p>
         </div>
@@ -49,7 +50,7 @@ import WaveParticles from './Three.js/WaveParticles.vue';
 }
 
 .main-content {
-  flex: 1;
+  flex: 12;
   position: relative;
   background-color: #1e2432;
   border-radius: 0px;
@@ -133,7 +134,7 @@ import WaveParticles from './Three.js/WaveParticles.vue';
   right: 2rem;
   text-align: right;
   backdrop-filter: blur(0px);
-  padding: 1.5rem;
+  padding: 2rem;
   border-radius: 16px;
 }
 
@@ -144,5 +145,23 @@ import WaveParticles from './Three.js/WaveParticles.vue';
   font-weight: 400;
 }
 
+.copyright {
+  position: absolute;
+  bottom: 1rem;
+  left: 2rem;
+  color: #ffffff;
+  font-size: 0.8rem;
+  opacity: 0.5;
+  z-index: 10;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .copyright {
+    bottom: 0.5rem;
+    left: 1rem;
+    font-size: 0.7rem;
+  }
+}
 
 </style>
