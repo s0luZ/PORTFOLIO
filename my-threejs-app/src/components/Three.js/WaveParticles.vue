@@ -142,52 +142,18 @@ const WAVE_RADIUS_MULTIPLIER = 35;
 const WAVE_INFLUENCE_DISTANCE = 25;
 const FADE_MULTIPLIER = 3;
 const WAVE_SPEED = 0.25;
-const MIN_WAVES = 1;
-const MAX_WAVES = 4;
+const SECOND_WAVE_TRIGGER = 0.6; // When first wave is at 60% of screen width
 
-// Wave direction patterns
-const WAVE_PATTERNS = [
-  { // Right to left
-    startX: (width) => width/2 + WAVE_RADIUS_MULTIPLIER,
-    startZ: () => 0,
-    moveX: (progress, width) => -progress * width * WAVE_SPEED,
-    moveZ: () => 0
-  },
-  { // Top right to bottom left
-    startX: (width) => width/2 + WAVE_RADIUS_MULTIPLIER,
-    startZ: (height) => -height/2,
-    moveX: (progress, width) => -progress * width * WAVE_SPEED,
-    moveZ: (progress, height) => progress * height * WAVE_SPEED * 0.5
-  },
-  { // Top right to left
-    startX: (width) => width/2 + WAVE_RADIUS_MULTIPLIER,
-    startZ: (height) => -height/2,
-    moveX: (progress, width) => -progress * width * WAVE_SPEED,
-    moveZ: (progress, height) => progress * height * WAVE_SPEED * 0.25
-  },
-  { // Bottom right to top left
-    startX: (width) => width/2 + WAVE_RADIUS_MULTIPLIER,
-    startZ: (height) => height/2,
-    moveX: (progress, width) => -progress * width * WAVE_SPEED,
-    moveZ: (progress, height) => -progress * height * WAVE_SPEED * 0.5
-  }
-];
-
-// Track multiple waves with random patterns
-let waves = [];
-
-// Function to create a new wave with random pattern
-function createNewWave(width, height) {
-  const pattern = WAVE_PATTERNS[Math.floor(Math.random() * WAVE_PATTERNS.length)];
-  return {
-    startTime: Date.now(),
-    progress: 0,
-    active: true,
-    pattern,
-    startX: pattern.startX(width),
-    startZ: pattern.startZ(height || width)
-  };
-}
+// Track multiple waves
+let waves = [{
+  startTime: 0,
+  progress: 0,
+  active: false
+}, {
+  startTime: 0,
+  progress: 0,
+  active: false
+}];
 
 function animate() {
   time += 0.0002;
@@ -197,32 +163,27 @@ function animate() {
     const colors = particles.attributes.color.array;
     const sizes = particles.attributes.size.array;
     const width = pointCloud.userData.width;
-    const height = width; // Using width as height for now
     const currentTime = Date.now();
     
-    // Initialize waves if none exist
-    if (waves.length === 0) {
-      const numWaves = Math.floor(Math.random() * (MAX_WAVES - MIN_WAVES + 1)) + MIN_WAVES;
-      for (let i = 0; i < numWaves; i++) {
-        waves.push(createNewWave(width, height));
-      }
-    }
-    
-    // Update and manage waves
-    waves = waves.filter(wave => wave.active);
-    
-    // Create new waves when needed
-    if (waves.length < MIN_WAVES) {
-      const newWavesNeeded = Math.floor(Math.random() * (MAX_WAVES - waves.length)) + 1;
-      for (let i = 0; i < newWavesNeeded; i++) {
-        waves.push(createNewWave(width, height));
-      }
+    // Update first wave
+    if (currentTime - lastWaveTime > WAVE_INTERVAL) {
+      lastWaveTime = currentTime;
+      waves[0].startTime = currentTime;
+      waves[0].active = true;
+      waves[0].progress = 0;
     }
     
     // Update wave progress
-    waves.forEach(wave => {
+    waves.forEach((wave, index) => {
       if (wave.active) {
         wave.progress = Math.min((currentTime - wave.startTime) / 1000, 8);
+        
+        // Start second wave when first wave reaches trigger point
+        if (index === 0 && !waves[1].active && wave.progress * WAVE_SPEED > SECOND_WAVE_TRIGGER) {
+          waves[1].startTime = currentTime;
+          waves[1].active = true;
+          waves[1].progress = 0;
+        }
         
         // Deactivate waves that have completed
         if (wave.progress >= 8) {
@@ -249,9 +210,8 @@ function animate() {
       waves.forEach(wave => {
         if (!wave.active) return;
         
-        // Calculate wave position based on pattern
-        const waveCenterX = wave.startX + wave.pattern.moveX(wave.progress, width);
-        const waveCenterZ = wave.startZ + wave.pattern.moveZ(wave.progress, height);
+        const waveCenterX = (width/2 + WAVE_RADIUS_MULTIPLIER) - (wave.progress * width * WAVE_SPEED);
+        const waveCenterZ = 0;
         
         const distanceFromWaveCenter = Math.sqrt(
           Math.pow(x - waveCenterX, 2) + 
@@ -280,6 +240,7 @@ function animate() {
             const height = smoothInfluence * Math.sin(time * 1.5) * 1.2 * horizontalFade;
             const size = (Math.random() * 0.15 + 0.05) * smoothInfluence * horizontalFade;
             
+            // Keep maximum values
             maxParticleOpacity = Math.max(maxParticleOpacity, particleOpacity);
             maxHeight = Math.max(maxHeight, height);
             maxSize = Math.max(maxSize, size);
