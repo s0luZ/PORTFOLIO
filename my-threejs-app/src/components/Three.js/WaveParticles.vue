@@ -46,12 +46,12 @@ function initThree() {
   container.appendChild(renderer.domElement);
 
   // Particle System
-  const particleCount = 150000;
+  const particleCount = 50000;
   particles = new THREE.BufferGeometry();
   const positions = new Float32Array(particleCount * 3);
   const colors = new Float32Array(particleCount * 3);
   const sizes = new Float32Array(particleCount);
-  const initialX = new Float32Array(particleCount); // Store initial X positions
+  const initialX = new Float32Array(particleCount);
 
   const color = new THREE.Color();
   
@@ -77,21 +77,20 @@ function initThree() {
     positions[i * 3 + 1] = y;
     positions[i * 3 + 2] = z;
     
-    initialX[i] = x; // Store initial X position
+    initialX[i] = x;
     
-    // Color gradient
-    const shade = Math.random() * 0.15 + 0.05;
-    // Gold color components (r: 1, g: 0.84, b: 0)
+    // Color gradient with increased brightness
+    const shade = Math.random() * 0.3 + 0.1;
     color.setRGB(
-      1.0 * shade, // Red component
-      0.84 * shade, // Green component slightly lower
-      0.0 * shade  // Blue component very low for gold effect
+      1.0 * shade,
+      0.84 * shade,
+      0.0 * shade
     );
     colors[i * 3] = color.r;
     colors[i * 3 + 1] = color.g;
     colors[i * 3 + 2] = color.b;
     
-    sizes[i] = Math.random() * 0.3 + 0.1;
+    sizes[i] = Math.random() * 0.5 + 0.2;
   }
 
   particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -99,10 +98,10 @@ function initThree() {
   particles.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
 
   const material = new THREE.PointsMaterial({
-    size: 0.1,
+    size: 0.2,
     sizeAttenuation: true,
     transparent: true,
-    opacity: 0.6,
+    opacity: 0.8,
     vertexColors: true,
     blending: THREE.AdditiveBlending,
   });

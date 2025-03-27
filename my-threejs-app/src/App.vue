@@ -1,11 +1,9 @@
 <script setup>
-import LandingPage from './components/LandingPage.vue';
-import WaveParticles from './components/Three.js/WaveParticles.vue';
+// Components will be loaded through router
 </script>
 
 <template>
-  <LandingPage />
-  <WaveParticles />
+  <router-view></router-view>
 </template>
 
 <style>
@@ -17,7 +15,4 @@ body {
   margin: 0;
   overflow: hidden;
 }
-
-
-
 </style>

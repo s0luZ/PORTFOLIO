@@ -1,7 +1,7 @@
 <template>
   <div class="landing-container">
     <main class="main-content">
-        <p class="copyright">&#169; 2025 Isaiah Macaraeg</p>
+      <p class="copyright">&#169; 2025 Isaiah Macaraeg</p>
       <div class="particles-wrapper">
         <WaveParticles />
         <nav class="side-nav">
@@ -11,26 +11,28 @@
           </div>
           
           <ul class="nav-links">
-            <li><a href="#" class="active">Home</a></li>
-            <li><a href="#">About me</a></li> 
-            <li><a href="#">Projects</a></li>
-            <li><a href="#">Skills & Tech Stack</a></li>
-            <li><a href="#">Experience / Work</a></li>
-            <li><a href="#">Contacts</a></li>
-            <li><a href="#">Blog</a></li>
+            <li><router-link to="/" class="nav-link active">Home</router-link></li>
+            <li><router-link to="/about" class="nav-link">About me</router-link></li> 
+            <li><router-link to="/projects" class="nav-link">Projects</router-link></li>
+            <li><router-link to="/skills" class="nav-link">Skills & Tech Stack</router-link></li>
+            <li><router-link to="/experience" class="nav-link">Experience / Work</router-link></li>
+            <li><router-link to="/contacts" class="nav-link">Contacts</router-link></li>
+            <li><router-link to="/blog" class="nav-link">Blog</router-link></li>
             <li><a href="#" class="resume-link">Resume (download)</a></li>
           </ul>
         </nav>
-        <div class="personal-info">
+        <Transition name="fade" appear>
+          <div v-show="showContent" class="personal-info">
             <p>
-                Born in 2000 <br>
-                in Manila, <br>
-                Philippines <br>
-                From fear to finesse— <br>
-                every developer <br>
-                starts somewhere.
+              Born in 2000 <br>
+              in Manila, <br>
+              Philippines <br>
+              From fear to finesse— <br>
+              every developer <br>
+              starts somewhere.
             </p>
-        </div>
+          </div>
+        </Transition>
       </div>
     </main>
   </div>
@@ -38,6 +40,13 @@
 
 <script setup>
 import WaveParticles from './Three.js/WaveParticles.vue';
+import { ref, onMounted } from 'vue';
+
+const showContent = ref(false);
+
+onMounted(() => {
+  showContent.value = true;
+});
 </script>
 
 <style scoped>
@@ -64,12 +73,11 @@ import WaveParticles from './Three.js/WaveParticles.vue';
   left: 0;
   width: 100%;
   height: 100%;
-  padding: 2rem;
+  padding: 1.5rem;
 }
 
 .side-nav {
   width: 35%;
-  padding: 2rem;
   backdrop-filter: blur(0px);
   border-radius: 24px;
   z-index: 2;
@@ -78,7 +86,7 @@ import WaveParticles from './Three.js/WaveParticles.vue';
 }
 
 .nav-header {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .nav-header h1 {
@@ -101,14 +109,12 @@ import WaveParticles from './Three.js/WaveParticles.vue';
 
 .nav-links {
   list-style: none;
-  padding: 0;
-  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.2rem;
 }
 
-.nav-links a {
+.nav-link {
   color: #ffffff;
   text-decoration: none;
   font-size: 1rem;
@@ -117,8 +123,8 @@ import WaveParticles from './Three.js/WaveParticles.vue';
   font-weight: 500;
 }
 
-.nav-links a:hover,
-.nav-links a.active {
+.nav-link:hover,
+.nav-link.active {
   opacity: 1;
 }
 
@@ -126,6 +132,9 @@ import WaveParticles from './Three.js/WaveParticles.vue';
   opacity: 0.6;
   font-size: 0.9rem;
   font-weight: 400;
+  color: #ffffff;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
 }
 
 .personal-info {
@@ -134,7 +143,6 @@ import WaveParticles from './Three.js/WaveParticles.vue';
   right: 2rem;
   text-align: right;
   backdrop-filter: blur(0px);
-  padding: 2rem;
   border-radius: 16px;
 }
 
@@ -164,4 +172,20 @@ import WaveParticles from './Three.js/WaveParticles.vue';
   }
 }
 
+/* Transition styles */
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
 </style>
