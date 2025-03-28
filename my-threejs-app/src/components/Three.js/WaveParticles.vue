@@ -144,12 +144,12 @@
   let lastWaveTime = 0;
   const WAVE_INTERVAL = 8000;
   const MOVEMENT_SPEED = 0.8;
-  const WAVE_RADIUS_MULTIPLIER = 35;
-  const WAVE_INFLUENCE_DISTANCE = 25;
-  const FADE_MULTIPLIER = 3;
+  const WAVE_RADIUS_MULTIPLIER = 80;
+  const WAVE_INFLUENCE_DISTANCE = 100;
+  const FADE_MULTIPLIER = 1.5;
   const WAVE_SPEED = 0.2;
   const MIN_WAVES = 1;
-  const MAX_WAVES = 4;
+  const MAX_WAVES = 9;
   
   // Wave direction patterns
   const WAVE_PATTERNS = [
@@ -288,7 +288,7 @@
             if ((isMovingRight ? x > waveCenterX : x < waveCenterX) && smoothInfluence > 0.05) {
               const horizontalDistance = Math.abs(waveCenterX - x);
               const fadeDistance = WAVE_INFLUENCE_DISTANCE * FADE_MULTIPLIER;
-              const horizontalFade = Math.pow(Math.min(horizontalDistance / fadeDistance, 1), 1.5);
+              const horizontalFade = Math.pow(Math.min(horizontalDistance / fadeDistance, 1), 2);
               
               const frontDistance = Math.max(0, waveRadius - distanceFromWaveCenter);
               const frontFade = Math.pow(Math.max(0, 1 - frontDistance / (WAVE_INFLUENCE_DISTANCE * 0.5)), 2);
