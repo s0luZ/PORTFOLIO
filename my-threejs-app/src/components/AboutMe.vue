@@ -28,8 +28,7 @@
               <p>
                 Hey! 👋 I'm a frontend designer & developer with a background in Electronics Engineering and a passion 
                 for building and understanding computers. I moved to Canada to study Computer Information Technology (CIT), 
-                where I balance work, school, and life as an international student. Family is important to me, and one of my biggest goals 
-                is to sponsor my mom so she can reunite with her sisters here.
+                where I balance work, school, and life as an international student.
               </p>
 
               <h2>My Passion for Frontend Development</h2>
@@ -91,7 +90,7 @@ onMounted(() => {
   background-color: #1e2432;
   border-radius: 0px;
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
 }
 
 .particles-wrapper {
@@ -166,7 +165,7 @@ onMounted(() => {
 
 .about-me-content {
   float: right;
-  text-align: right;
+  text-align: left;
   position: absolute;
   z-index: 2;
   overflow-y: auto;
@@ -178,17 +177,18 @@ onMounted(() => {
 
 .about-me-wrapper {
   padding-right: 3.5rem;
+  padding-top: 7rem;
 }
 
 .about-me-wrapper h2 {
-  font-size: 2rem;
+  font-size: 1rem;
   font-weight: 600;
   margin-bottom: 0rem;
 }
 
 .about-me-wrapper p {
   margin: 0rem 0;
-  font-size: 1.1rem;
+  font-size: 0.8rem;
   line-height: 1.8;
   opacity: 0.9;
   margin-bottom: 2rem;

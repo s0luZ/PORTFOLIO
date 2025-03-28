@@ -64,7 +64,7 @@ onMounted(() => {
   background-color: #1e2432;
   border-radius: 0px;
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
 }
 
 .particles-wrapper {
